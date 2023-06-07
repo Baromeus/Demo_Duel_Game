@@ -24,6 +24,7 @@ public class ItemUtils {
             case "G"-> result = new Gloves(name, price, value, hind, slot);
             case "H"-> result = new Helmet(name, price, value, hind, slot);
             case "O"-> result = new Shild(name, price, value, hind, slot);
+            case "I" -> result = new Consumable(name, price, value, hind, slot);
         }
         return result;
     }

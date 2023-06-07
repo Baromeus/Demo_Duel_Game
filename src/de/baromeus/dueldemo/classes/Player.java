@@ -1,6 +1,9 @@
 package de.baromeus.dueldemo.classes;
 
 import de.baromeus.dueldemo.enums.EStats;
+import de.baromeus.dueldemo.interfaces.Item;
+
+import java.util.ArrayList;
 
 import static de.baromeus.dueldemo.utils.ImageUtils.*;
 
@@ -9,6 +12,7 @@ public class Player extends Human implements de.baromeus.dueldemo.interfaces.Pla
     private Stats stats;
     private int difficulty;
     private CharacterPanel character;
+    private ArrayList<Item> inventory;
 
     public Player(){
         super();
@@ -16,6 +20,7 @@ public class Player extends Human implements de.baromeus.dueldemo.interfaces.Pla
         character = new CharacterPanel();
         character.setName(name);
         character.addImage(getImage(IMAGE_SIDE));
+        inventory = new ArrayList<>();
     }
 
     public void setValues(int difficulty, int str, int vit, int res, int agi, int intel, int per, int luck){
@@ -51,6 +56,18 @@ public class Player extends Human implements de.baromeus.dueldemo.interfaces.Pla
         character.invalidate();
     }
 
+    public void addToInventory(Item item){
+        inventory.add(item);
+    }
+
+    public void removeFromInventory(Item item){
+        inventory.remove(item);
+    }
+
+    public ArrayList<Item> getInventory(){
+        return inventory;
+    }
+
     @Override
     public void setFocus(EStats stat) {
         focus = stat;
@@ -64,5 +81,13 @@ public class Player extends Human implements de.baromeus.dueldemo.interfaces.Pla
     @Override
     public Stats getStatisitc() {
         return stats;
+    }
+
+    public int getMoney(){
+        return character.getMoney();
+    }
+
+    public void setMoney(int value){
+        character.setMoney(value);
     }
 }

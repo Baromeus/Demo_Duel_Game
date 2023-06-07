@@ -121,15 +121,14 @@ public class MenuSceneBuilder {
         }
 
         public static MenuScene getTraderMenu(String type){
-            if(traderMenu == null){
-                traderMenu = new MenuScene("Händler");
-                traderMenu.addButton("Kaufen")
-                                .addActionListener(e -> callTradingMenu(type,false));
-                traderMenu.addButton("Verkaufen")
-                                .addActionListener(e -> callTradingMenu(type,true));
-                traderMenu.addButton("Zurück")
-                        .addActionListener(e -> callTownMenu());
-            }
+            traderMenu = new MenuScene("Händler");
+            traderMenu.addButton("Kaufen")
+                            .addActionListener(e -> callTradingMenu(type,false));
+            traderMenu.addButton("Verkaufen")
+                            .addActionListener(e -> callTradingMenu(type,true));
+            traderMenu.addButton("Zurück")
+                    .addActionListener(e -> callTownMenu());
+
             var f = "";
             if(Objects.equals(type, WEAPON)) f = IMAGE_BLACKSMITH;
             if(Objects.equals(type, ARMOR)) f = IMAGE_ARMORY;

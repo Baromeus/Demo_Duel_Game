@@ -27,6 +27,7 @@ public class ShopScene implements GameScene {
     private final JLabel title;
     private final ArrayList<JButton> buttons;
     private final Map<JButton, Item> itemButtons;
+    private int mode = 0; //0 nothing, 1 buy, 2 sell
 
     public ShopScene(String label){
         top = new JPanel();
@@ -84,6 +85,10 @@ public class ShopScene implements GameScene {
 
     }
 
+    public void setTitle(String title){
+        this.title.setText(title);
+    }
+
     public JButton addButton(String label){
         JButton temp = new JButton(label);
         buttons.add(temp);
@@ -98,6 +103,12 @@ public class ShopScene implements GameScene {
         return temp;
     }
 
+    public void clearButtons(){
+        buttons.clear();
+        bottom.removeAll();
+        bottom.revalidate();
+    }
+
     public void addBackground(Image bg){
         center.addImage(bg);
     }
@@ -106,6 +117,31 @@ public class ShopScene implements GameScene {
         if(item == null) return null;
 
         JButton temp = new JButton(item.getName());
+
+        temp.addActionListener(e ->{
+            if(mode == 1){
+                var it = itemButtons.get(temp);
+                var price = it.getPrice();
+                var money = player.getMoney();
+                if(money > price){
+                    money -= price;
+                    player.setMoney(money);
+                    player.addToInventory(it);
+                }else{
+                    JOptionPane.showConfirmDialog(null,"Nicht genug Geld!");
+                }
+            }
+            if(mode == 2){
+                var it = itemButtons.get(temp);
+                var price = it.getPrice();
+                var money = player.getMoney();
+                money += price;
+                player.setMoney(money);
+                player.removeFromInventory(it);
+                //TODO funktonioert hier noch nicht!!!1111
+            }
+        });
+
         var tooltip = "Preis: " + item.getPrice();
         if(item instanceof Weapon)
             tooltip+= " | Schaden +";
@@ -124,5 +160,8 @@ public class ShopScene implements GameScene {
         center.revalidate();
 
         return temp;
+    }
+    public void setMode(int mode){
+        this.mode = mode;
     }
 }

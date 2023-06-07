@@ -3,12 +3,16 @@ package de.baromeus.dueldemo.classes;
 import javax.swing.*;
 import java.awt.*;
 
+import static de.baromeus.dueldemo.MainFunctions.callInventory;
+
 public class CharacterPanel extends ImagePanel{
     JLabel name;
     JLabel hp;
     JLabel money;
     JLabel reputation;
     JLabel siluette;
+
+    JButton btnInventory;
 
     public CharacterPanel(){
         super();
@@ -70,6 +74,14 @@ public class CharacterPanel extends ImagePanel{
             this.add(reputation,BorderLayout.SOUTH);
         }
         reputation.setText("Rep.: " + r);
+        btnInventory = new JButton("Inventar");
+        btnInventory.addActionListener(e -> callInventory());
+        btnInventory.setBounds(250,560, 100,20);
+        this.add(btnInventory,BorderLayout.SOUTH);
         this.invalidate();
+    }
+
+    public int getMoney(){
+        return Integer.parseInt(money.getText());
     }
 }

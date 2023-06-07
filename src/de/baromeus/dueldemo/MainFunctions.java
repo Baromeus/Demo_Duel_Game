@@ -6,6 +6,7 @@ import de.baromeus.dueldemo.classes.Player;
 import static de.baromeus.dueldemo.main.player;
 import static de.baromeus.dueldemo.scenebuilder.GameSceneBuilder.*;
 import static de.baromeus.dueldemo.scenebuilder.MenuSceneBuilder.*;
+import static de.baromeus.dueldemo.scenebuilder.ShopSceneBuilder.getInventory;
 import static de.baromeus.dueldemo.scenebuilder.ShopSceneBuilder.getTradingMenu;
 
 public class MainFunctions {
@@ -60,5 +61,8 @@ public class MainFunctions {
 
     public static void callCharacterGen(){
         game.addGameScene(getChracterGenInstance());
+    }
+    public static void callInventory(){
+        game.addGameScene(getInventory("",false));
     }
 }
