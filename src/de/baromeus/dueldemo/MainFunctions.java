@@ -2,6 +2,8 @@ package de.baromeus.dueldemo;
 
 import de.baromeus.dueldemo.classes.CharacterPanel;
 import de.baromeus.dueldemo.classes.Player;
+import de.baromeus.dueldemo.enums.Shop;
+import de.baromeus.dueldemo.interfaces.GameScene;
 
 import static de.baromeus.dueldemo.main.player;
 import static de.baromeus.dueldemo.scenebuilder.GameSceneBuilder.*;
@@ -40,10 +42,10 @@ public class MainFunctions {
     public static void callTownMenu() {
         game.addGameScene(getTownMenuInstance());
     }
-    public static void callTraderMenu(String type){
+    public static void callTraderMenu(Shop type){
         game.addGameScene(getTraderMenu(type));
     }
-    public static void callTradingMenu(String type, Boolean sell){
+    public static void callTradingMenu(Shop type, Boolean sell){
         game.addGameScene(getTradingMenu(type, sell));
     }
 
@@ -63,6 +65,7 @@ public class MainFunctions {
         game.addGameScene(getChracterGenInstance());
     }
     public static void callInventory(){
-        game.addGameScene(getInventory("",false));
+        GameScene gs = game.getGameScene();
+        game.addGameScene(getInventory(gs.getTyp(),false));
     }
 }

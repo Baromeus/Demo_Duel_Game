@@ -1,5 +1,6 @@
 package de.baromeus.dueldemo.scenebuilder;
 
+import de.baromeus.dueldemo.enums.Shop;
 import de.baromeus.dueldemo.scenes.ShopScene;
 
 import java.io.BufferedReader;
@@ -22,7 +23,7 @@ public class ShopSceneBuilder {
 
     public static ShopScene getWeaponShop(){
         if(weaponShop == null){
-            weaponShop = new ShopScene("Waffenschmied -> Kaufen");
+            weaponShop = new ShopScene("Waffenschmied -> Kaufen", Shop.WEAPON);
             weaponShop.addBackground(getImage(IMAGE_BLACKSMITH));
 
             weaponShop.addButton("Zurück")
@@ -42,7 +43,7 @@ public class ShopSceneBuilder {
 
     public static ShopScene getArmorShop(){
         if(armorShop == null){
-            armorShop = new ShopScene("Rüstungsmacher -> Kaufen");
+            armorShop = new ShopScene("Rüstungsmacher -> Kaufen", Shop.ARMOR);
             armorShop.addBackground(getImage(IMAGE_ARMORY));
 
             armorShop.addButton("Zurück")
@@ -62,7 +63,7 @@ public class ShopSceneBuilder {
 
     public static ShopScene getGrocerShop(){
         if(crocerShop == null){
-            crocerShop = new ShopScene("Krämer -> Kaufen");
+            crocerShop = new ShopScene("Krämer -> Kaufen", Shop.GROCER);
             crocerShop.addBackground(getImage(IMAGE_CROCER));
 
             crocerShop.addButton("Zurück")
@@ -80,13 +81,15 @@ public class ShopSceneBuilder {
         return crocerShop;
     }
 
-    public static ShopScene getInventory(String type, Boolean sell){
+    public static ShopScene getInventory(Shop typ, Boolean sell){
         if(inventory == null){
-            inventory = new ShopScene("");
+            inventory = new ShopScene("", Shop.TOWN);
         }
         inventory.clearButtons();
+        inventory.clearItems();
+        inventory.setMode(0);
         if(sell){
-            switch (type){
+            switch (typ){
                 case WEAPON -> {
                     inventory.addBackground(getImage(IMAGE_BLACKSMITH));
                     inventory.setTitle("Waffenschmied -> Verkaufen");
@@ -95,18 +98,40 @@ public class ShopSceneBuilder {
                     inventory.addBackground(getImage(IMAGE_ARMORY));
                     inventory.setTitle("Rüstungsmacher -> Verkaufen");
                 }
-                case CROCER -> {
+                case GROCER -> {
                     inventory.addBackground(getImage(IMAGE_CROCER));
                     inventory.setTitle("Krämer -> Verkaufen");
                 }
             }
             inventory.addButton("Zurück")
-                    .addActionListener(e -> callTraderMenu(type));
+                    .addActionListener(e -> callTraderMenu(typ));
         }else{
-            inventory.addBackground(getImage(IMAGE_TOWN));
-            inventory.setTitle("Inventar");
-            inventory.addButton("Zurück")
-                    .addActionListener(e -> callTownMenu());
+            switch (typ){
+                case WEAPON -> {
+                    inventory.addBackground(getImage(IMAGE_BLACKSMITH));
+                    inventory.setTitle("Inventar");
+                    inventory.addButton("Zurück")
+                            .addActionListener(e -> callTraderMenu(typ));
+                }
+                case ARMOR -> {
+                    inventory.addBackground(getImage(IMAGE_ARMORY));
+                    inventory.setTitle("Inventar");
+                    inventory.addButton("Zurück")
+                            .addActionListener(e -> callTraderMenu(typ));
+                }
+                case GROCER -> {
+                    inventory.addBackground(getImage(IMAGE_CROCER));
+                    inventory.setTitle("Inventar");
+                    inventory.addButton("Zurück")
+                            .addActionListener(e -> callTraderMenu(typ));
+                }
+                default -> {
+                    inventory.addBackground(getImage(IMAGE_TOWN));
+                    inventory.setTitle("Inventar");
+                    inventory.addButton("Zurück")
+                            .addActionListener(e -> callTownMenu());
+                }
+            }
         }
 
         player.getInventory().forEach(it ->{
@@ -116,19 +141,21 @@ public class ShopSceneBuilder {
         return inventory;
     }
 
-    public static ShopScene getTradingMenu(String type, Boolean sell){
+    public static ShopScene getTradingMenu(Shop typ, Boolean sell){
         ShopScene ss = null;
 
         if(sell){
-            ss = getInventory(type, true);
+            ss = getInventory(typ, true);
+            ss.setMode(2);
         }else{
-            switch (type) {
+            switch (typ) {
                 case WEAPON -> ss = getWeaponShop();
                 case ARMOR -> ss = getArmorShop();
-                case CROCER -> ss = getGrocerShop();
+                case GROCER -> ss = getGrocerShop();
             }
+            if(ss != null)
+                ss.setMode(1);
         }
-
         return ss;
     }
 }

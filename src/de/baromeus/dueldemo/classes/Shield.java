@@ -1,7 +1,7 @@
 package de.baromeus.dueldemo.classes;
 
-public class Shild extends ItemClass{
-        public Shild(
+public class Shield extends ItemClass{
+        public Shield(
                 String name,
                 int price,
                 int value,

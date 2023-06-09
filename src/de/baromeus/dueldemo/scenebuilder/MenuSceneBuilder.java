@@ -1,5 +1,6 @@
 package de.baromeus.dueldemo.scenebuilder;
 
+import de.baromeus.dueldemo.enums.Shop;
 import de.baromeus.dueldemo.scenes.MenuScene;
 import java.util.Objects;
 
@@ -21,7 +22,7 @@ public class MenuSceneBuilder {
     public static final String ARMOR = "Rüstungsmacher";
     public static final String CROCER = "Krämer";
 
-    public static String trader = "";
+    public static Shop trader = Shop.TOWN;
 
         public static MenuScene getMainMenuInstance(){
             if(mainMenu == null) {
@@ -58,13 +59,13 @@ public class MenuSceneBuilder {
                         .addActionListener(e -> callArenaMenu());
 
                 townMenu.addButton("Zum Waffenschmied")
-                        .addActionListener(e -> callTraderMenu(WEAPON));
+                        .addActionListener(e -> callTraderMenu(Shop.WEAPON));
 
                 townMenu.addButton("Zum Rüstungsmacher")
-                        .addActionListener(e -> callTraderMenu(ARMOR));
+                        .addActionListener(e -> callTraderMenu(Shop.ARMOR));
 
                 townMenu.addButton("Zum Krämer")
-                        .addActionListener(e -> callTraderMenu(CROCER));
+                        .addActionListener(e -> callTraderMenu(Shop.GROCER));
 
                 townMenu.addButton("Zur Taverne")
                         .addActionListener(e -> callTavernMenu());
@@ -120,25 +121,36 @@ public class MenuSceneBuilder {
             return wilderness;
         }
 
-        public static MenuScene getTraderMenu(String type){
+        public static MenuScene getTraderMenu(Shop typ){
             traderMenu = new MenuScene("Händler");
             traderMenu.addButton("Kaufen")
-                            .addActionListener(e -> callTradingMenu(type,false));
+                            .addActionListener(e -> callTradingMenu(typ,false));
             traderMenu.addButton("Verkaufen")
-                            .addActionListener(e -> callTradingMenu(type,true));
+                            .addActionListener(e -> callTradingMenu(typ,true));
             traderMenu.addButton("Zurück")
                     .addActionListener(e -> callTownMenu());
 
             var f = "";
-            if(Objects.equals(type, WEAPON)) f = IMAGE_BLACKSMITH;
-            if(Objects.equals(type, ARMOR)) f = IMAGE_ARMORY;
-            if(Objects.equals(type, CROCER)) f = IMAGE_CROCER;
+            switch (typ){
+                case WEAPON -> {
+                    f = IMAGE_BLACKSMITH;
+                    traderMenu.changeTitle(WEAPON);
+                }
+                case ARMOR -> {
+                    f = IMAGE_ARMORY;
+                    traderMenu.changeTitle(ARMOR);
+                }
+                case GROCER -> {
+                    f = IMAGE_CROCER;
+                    traderMenu.changeTitle(CROCER);
+                }
+            }
 
             if(!f.equals(""))
                 traderMenu.addBackground(getImage(f));
 
-            traderMenu.changeTitle(type);
-            trader = type;
+
+            trader = typ;
             return traderMenu;
         }
 

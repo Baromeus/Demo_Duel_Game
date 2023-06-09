@@ -2,6 +2,7 @@ package de.baromeus.dueldemo.scenes;
 
 import de.baromeus.dueldemo.classes.CharacterPanel;
 import de.baromeus.dueldemo.classes.ImagePanel;
+import de.baromeus.dueldemo.enums.Shop;
 import de.baromeus.dueldemo.interfaces.GameScene;
 
 import javax.swing.*;
@@ -22,6 +23,7 @@ public class MenuScene implements GameScene {
     private final JPanel bottom;
     private final JLabel title;
     private final ArrayList<JButton> buttons;
+    private Shop typ = Shop.TOWN;
 
     public MenuScene(String label){
         top = new JPanel();
@@ -113,5 +115,10 @@ public class MenuScene implements GameScene {
     @Override
     public void keyReact(KeyEvent e) {
 
+    }
+
+    @Override
+    public Shop getTyp(){
+        return typ;
     }
 }

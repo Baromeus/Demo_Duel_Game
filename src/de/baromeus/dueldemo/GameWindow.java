@@ -62,6 +62,10 @@ public class GameWindow {
         window.setVisible(true);
     }
 
+    public GameScene getGameScene(){
+        return gs;
+    }
+
     public void addGameScene(GameScene gameScene){
         gs = gameScene;
         top.removeAll();

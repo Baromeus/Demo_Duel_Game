@@ -11,7 +11,6 @@ public class CharacterPanel extends ImagePanel{
     JLabel money;
     JLabel reputation;
     JLabel siluette;
-
     JButton btnInventory;
 
     public CharacterPanel(){
@@ -82,6 +81,8 @@ public class CharacterPanel extends ImagePanel{
     }
 
     public int getMoney(){
-        return Integer.parseInt(money.getText());
+        var s1 = money.getText();
+        s1 = s1.substring(4, s1.length()-6);
+        return Integer.parseInt(s1);
     }
 }

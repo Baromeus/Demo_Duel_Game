@@ -3,6 +3,7 @@ package de.baromeus.dueldemo.scenes;
 import de.baromeus.dueldemo.classes.CharacterPanel;
 import de.baromeus.dueldemo.classes.ImagePanel;
 import de.baromeus.dueldemo.classes.Weapon;
+import de.baromeus.dueldemo.enums.Shop;
 import de.baromeus.dueldemo.interfaces.GameScene;
 import de.baromeus.dueldemo.interfaces.Item;
 
@@ -28,8 +29,10 @@ public class ShopScene implements GameScene {
     private final ArrayList<JButton> buttons;
     private final Map<JButton, Item> itemButtons;
     private int mode = 0; //0 nothing, 1 buy, 2 sell
+    private Shop typ = Shop.TOWN;
 
-    public ShopScene(String label){
+    public ShopScene(String label, Shop t){
+        typ = t;
         top = new JPanel();
         center = new ImagePanel();
         playerPanel = player.getPlayerPanel();
@@ -109,6 +112,12 @@ public class ShopScene implements GameScene {
         bottom.revalidate();
     }
 
+    public void clearItems(){
+        itemButtons.clear();
+        center.removeAll();
+        center.revalidate();
+    }
+
     public void addBackground(Image bg){
         center.addImage(bg);
     }
@@ -138,7 +147,8 @@ public class ShopScene implements GameScene {
                 money += price;
                 player.setMoney(money);
                 player.removeFromInventory(it);
-                //TODO funktonioert hier noch nicht!!!1111
+                itemButtons.remove(temp);
+                setButtons();
             }
         });
 
@@ -151,6 +161,11 @@ public class ShopScene implements GameScene {
         temp.setToolTipText(tooltip);
         ToolTipManager.sharedInstance().setInitialDelay(0);
         itemButtons.put(temp,item);
+        setButtons();
+        return temp;
+    }
+
+    private void setButtons(){
         center.removeAll();
 
         itemButtons.forEach((btn, it) -> center.add(btn));
@@ -158,10 +173,12 @@ public class ShopScene implements GameScene {
         center.validate();
         center.repaint();
         center.revalidate();
-
-        return temp;
     }
     public void setMode(int mode){
         this.mode = mode;
+    }
+    @Override
+    public Shop getTyp(){
+        return typ;
     }
 }

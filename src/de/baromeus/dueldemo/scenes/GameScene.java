@@ -3,6 +3,7 @@ package de.baromeus.dueldemo.scenes;
 import de.baromeus.dueldemo.classes.CharacterPanel;
 import de.baromeus.dueldemo.classes.ImagePanel;
 import de.baromeus.dueldemo.classes.Lifeform;
+import de.baromeus.dueldemo.enums.Shop;
 
 import javax.swing.*;
 import java.awt.*;
@@ -138,5 +139,9 @@ public class GameScene implements de.baromeus.dueldemo.interfaces.GameScene {
         switch (e.getKeyCode()){
             case KeyEvent.VK_ENTER -> skipText();
         }
+    }
+    @Override
+    public Shop getTyp(){
+        return Shop.TOWN;
     }
 }
