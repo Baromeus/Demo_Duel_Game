@@ -31,7 +31,7 @@ public class GameSceneBuilder {
         if(characterGen == null){
             characterGen = new GameScene("Charaktererstellung");
             var player = getPlayer();
-            player.setGender(true);
+//            player.setGender(true);
 
 
             characterGen.addButton("Zurück")
@@ -46,7 +46,8 @@ public class GameSceneBuilder {
             
             characterGen.addButton("Geschlecht")
                     .addActionListener(e ->{
-                        player.setGender(!Objects.equals(player.getGender(), "Mann"));
+                        player.switchGender();
+//                        player.setGender(!Objects.equals(player.getGender(), "Mann"));
                     });
 
             JButton auswuerfeln =  characterGen.addButton("Auswürfeln");

@@ -13,14 +13,17 @@ public class Player extends Human implements de.baromeus.dueldemo.interfaces.Pla
     private int difficulty;
     private CharacterPanel character;
     private ArrayList<Item> inventory;
+    private int money;
+    private int rep;
 
     public Player(){
         super();
         name = "No Name";
         character = new CharacterPanel();
-        character.setName(name);
+//        character.setName(name);
         character.addImage(getImage(IMAGE_SIDE));
         inventory = new ArrayList<>();
+        addObserver(character.playerObserver);
     }
 
     public void setValues(int difficulty, int str, int vit, int res, int agi, int intel, int per, int luck){
@@ -32,9 +35,14 @@ public class Player extends Human implements de.baromeus.dueldemo.interfaces.Pla
         intelligence = intel;
         perception = per;
         this.luck = luck;
-        character.setHP(maxHP(),maxHP());
-        character.setReputation("Unbekannt");
-        character.setMoney(250 + 50 * luck);
+//        character.setHP(maxHP(),maxHP());
+//        character.setReputation("Unbekannt");
+//        character.setMoney(250 + 50 * luck);
+        money = 250 + 50 * luck;
+        rep = 10;
+        hp = maxHP();
+        setChanged();
+        notifyObservers();
     }
 
     public CharacterPanel getPlayerPanel(){
@@ -44,17 +52,18 @@ public class Player extends Human implements de.baromeus.dueldemo.interfaces.Pla
     @Override
     public void setName(String name) {
         this.name = name;
-        character.setName(name);
+        setChanged();
+        notifyObservers();
     }
 
-    public void setGender(Boolean isMale){
-        male = isMale;
-        if(male)
-            character.setSiluette(getImageIcon(IMAGE_MALE));
-        else
-            character.setSiluette(getImageIcon(IMAGE_FEMALE));
-        character.invalidate();
-    }
+//    public void setGender(Boolean isMale){
+//        male = isMale;
+//        if(male)
+//            character.setSiluette(getImageIcon(IMAGE_MALE));
+//        else
+//            character.setSiluette(getImageIcon(IMAGE_FEMALE));
+//        character.invalidate();
+//    }
 
     public void addToInventory(Item item){
         inventory.add(item);
@@ -84,10 +93,22 @@ public class Player extends Human implements de.baromeus.dueldemo.interfaces.Pla
     }
 
     public int getMoney(){
-        return character.getMoney();
+        return money;
     }
 
     public void setMoney(int value){
-        character.setMoney(value);
+        money = value;
+        setChanged();
+        notifyObservers();
+    }
+
+    public int getReputation(){
+        return rep;
+    }
+
+    public void setReputation(int value){
+        rep = value;
+        setChanged();
+        notifyObservers();
     }
 }

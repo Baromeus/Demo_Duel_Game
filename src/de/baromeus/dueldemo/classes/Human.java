@@ -42,6 +42,12 @@ public abstract class Human extends Lifeform {
             return "Frau";
     }
 
+    public void switchGender(){
+        male = !male;
+        setChanged();
+        notifyObservers();
+    }
+
     @Override
     protected void levelUp() {
         level++;
@@ -52,5 +58,7 @@ public abstract class Human extends Lifeform {
         intelligence+= 1 + Math.round(level * 0.5f);
         perception+= 1 + Math.round(level * 0.5f);
         luck+= Math.round(level * 0.25f);
+        setChanged();
+        notifyObservers();
     }
 }

@@ -104,10 +104,10 @@ public class GameScene implements de.baromeus.dueldemo.interfaces.GameScene {
 
     }
 
-    public void setEnemy(Lifeform en){
-        enemyPanel.setName(en.getName());
-        enemyPanel.setHP(en.getHp(),en.getMaxHP());
-    }
+//    public void setEnemy(Lifeform en){
+//        enemyPanel.setName(en.getName());
+//        enemyPanel.setHP(en.getHp(),en.getMaxHP());
+//    }
 
     @Override
     public JPanel getTop() {

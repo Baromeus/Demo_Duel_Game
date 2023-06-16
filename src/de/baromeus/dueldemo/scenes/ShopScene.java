@@ -132,7 +132,7 @@ public class ShopScene implements GameScene {
                 var it = itemButtons.get(temp);
                 var price = it.getPrice();
                 var money = player.getMoney();
-                if(money > price){
+                if(money >= price){
                     money -= price;
                     player.setMoney(money);
                     player.addToInventory(it);

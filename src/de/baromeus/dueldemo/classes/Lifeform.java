@@ -1,6 +1,8 @@
 package de.baromeus.dueldemo.classes;
 
-public abstract class Lifeform {
+import java.util.Observable;
+
+public abstract class Lifeform extends Observable {
     protected String name;
     protected int hp;
     protected int level = 1;
