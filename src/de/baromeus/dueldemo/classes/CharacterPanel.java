@@ -2,8 +2,6 @@ package de.baromeus.dueldemo.classes;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
-import java.util.Observer;
 
 import static de.baromeus.dueldemo.MainFunctions.callInventory;
 import static de.baromeus.dueldemo.utils.ImageUtils.*;
@@ -13,27 +11,30 @@ public class CharacterPanel extends ImagePanel{
     JLabel hp;
     JLabel money;
     JLabel reputation;
-    JLabel siluette;
+    JLabel silhouette;
     JButton btnInventory;
-    Observer playerObserver;
+//    Observer playerObserver;
+    Player player;
 
     public CharacterPanel(){
         super();
 
-        playerObserver = (o, arg) -> {
-            Player p = (Player) o;
-            this.hp.setText("HP: " + p.getHp());
-            this.name.setText(p.getName());
-            this.money.setText("G:  " + p.getMoney() + " Taler");
-            this.reputation.setText("Rp: " + p.getReputation());
-            if(Objects.equals(p.getGender(), "Mann")){
-                siluette.setIcon(getImageIcon(IMAGE_MALE));
-            }else{
-                siluette.setIcon(getImageIcon(IMAGE_FEMALE));
-            };
 
-            this.invalidate();
-        };
+
+//        playerObserver = (o, arg) -> {
+//            Player p = (Player) o;
+//            this.hp.setText("HP: " + p.getHp());
+//            this.name.setText(p.getName());
+//            this.money.setText("G:  " + p.getMoney() + " Taler");
+//            this.reputation.setText("Rp: " + p.getReputation());
+//            if(Objects.equals(p.getGender(), "Mann")){
+//                siluette.setIcon(getImageIcon(IMAGE_MALE));
+//            }else{
+//                siluette.setIcon(getImageIcon(IMAGE_FEMALE));
+//            };
+//
+//            this.invalidate();
+//        };
 
 
         this.setLayout(null);
@@ -63,17 +64,65 @@ public class CharacterPanel extends ImagePanel{
         btnInventory.addActionListener(e -> callInventory());
         btnInventory.setBounds(250,560, 100,20);
 
-        siluette = new JLabel();
-        siluette.setBounds(5,0,400,610);
+        silhouette = new JLabel();
+        silhouette.setBounds(5,0,400,610);
 
 //        siluette.setPreferredSize(DSide);
         this.add(name, BorderLayout.NORTH);
         this.add(hp,BorderLayout.SOUTH);
         this.add(money,BorderLayout.SOUTH);
         this.add(reputation,BorderLayout.SOUTH);
-        this.add(siluette);
+        this.add(silhouette);
         this.add(btnInventory);
         invalidate();
+    }
+
+    public void setPlayer(Player p){
+        // Entferne alle Listener, wenn zuvor ein Player gesetzt war
+        if(player != null)
+            player.propertyName().removeAllListener();
+        // Übergabe des Spielers
+        player = p;
+
+        // Ist der neue Player null, so entferne alle werte und beende die Routine vorzeitig
+        if(player == null){
+            name.setText("");
+            hp.setText("");
+            money.setText("");
+            reputation.setText("");
+            silhouette.setIcon(null);
+            return;
+        }
+
+        // Initialwerte
+        this.name.setText(player.getName());
+        setHP(player.getHp(), player.maxHP());
+        setMoney(player.getMoney());
+        setReputation(player.getReputation());
+        setSilhouette(player.getMale());
+
+       // Übername durch Listener
+        player.propertyName().addListener((o, n) -> this.name.setText(n));
+        player.propertyHP().addListener((o, n) -> setHP(n, player.maxHP()));
+        player.propertyMoney().addListener((o,n) -> setMoney(n));
+        player.propertyReputation().addListener((o,n) -> setReputation(n));
+        player.propertyMale().addListener((o,n) -> setSilhouette(n));
+    }
+    private void setHP(int aktuell, int max){
+        hp.setText("HP:   " + aktuell + "/" + max);
+    }
+    private void setMoney(int aktuell){
+        money.setText("Geld: " + aktuell + " Taler");
+    }
+    private void setReputation(int aktuell){
+        reputation.setText("Reputation: " + aktuell);
+    }
+    private void setSilhouette(Boolean aktuell){
+        if(aktuell){
+            silhouette.setIcon(getImageIcon(IMAGE_MALE));
+        }else{
+            silhouette.setIcon(getImageIcon(IMAGE_FEMALE));
+        };
     }
 
 //    public void setName(String label){

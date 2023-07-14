@@ -2,6 +2,7 @@ package de.baromeus.dueldemo.classes;
 
 import de.baromeus.dueldemo.enums.EStats;
 import de.baromeus.dueldemo.interfaces.Item;
+import de.baromeus.dueldemo.utils.Property;
 
 import java.util.ArrayList;
 
@@ -13,36 +14,36 @@ public class Player extends Human implements de.baromeus.dueldemo.interfaces.Pla
     private int difficulty;
     private CharacterPanel character;
     private ArrayList<Item> inventory;
-    private int money;
-    private int rep;
+    private Property<Integer> money = new Property<>(0);
+    private Property<Integer> rep = new Property<>(0);
 
     public Player(){
         super();
-        name = "No Name";
+        name.set("No Name");
+        hp.set(0);
         character = new CharacterPanel();
 //        character.setName(name);
         character.addImage(getImage(IMAGE_SIDE));
+        character.setPlayer(this);
         inventory = new ArrayList<>();
-        addObserver(character.playerObserver);
+//        addObserver(character.playerObserver);
     }
 
     public void setValues(int difficulty, int str, int vit, int res, int agi, int intel, int per, int luck){
         this.difficulty = difficulty;
-        strength = str;
-        vitality = vit;
-        resilience = res;
-        agility = agi;
-        intelligence = intel;
-        perception = per;
-        this.luck = luck;
+        strength.set(str);
+        vitality.set(vit);
+        resilience.set(res);
+        agility.set(agi);
+        intelligence.set(intel);
+        perception.set(per);
+        this.luck.set(luck);
 //        character.setHP(maxHP(),maxHP());
 //        character.setReputation("Unbekannt");
 //        character.setMoney(250 + 50 * luck);
-        money = 250 + 50 * luck;
-        rep = 10;
-        hp = maxHP();
-        setChanged();
-        notifyObservers();
+        money.set(250 + 50 * luck);
+        rep.set(10);
+        hp.set(maxHP());
     }
 
     public CharacterPanel getPlayerPanel(){
@@ -51,9 +52,7 @@ public class Player extends Human implements de.baromeus.dueldemo.interfaces.Pla
 
     @Override
     public void setName(String name) {
-        this.name = name;
-        setChanged();
-        notifyObservers();
+        this.name.set(name);
     }
 
 //    public void setGender(Boolean isMale){
@@ -81,34 +80,30 @@ public class Player extends Human implements de.baromeus.dueldemo.interfaces.Pla
     public void setFocus(EStats stat) {
         focus = stat;
     }
-
     @Override
     public void startFight() {
        stats.fights++;
     }
-
     @Override
     public Stats getStatisitc() {
         return stats;
     }
-
     public int getMoney(){
+        return money.get();
+    }
+    public Property<Integer> propertyMoney(){
         return money;
     }
-
     public void setMoney(int value){
-        money = value;
-        setChanged();
-        notifyObservers();
+        money.set(value);
     }
-
     public int getReputation(){
+        return rep.get();
+    }
+    public Property<Integer> propertyReputation(){
         return rep;
     }
-
     public void setReputation(int value){
-        rep = value;
-        setChanged();
-        notifyObservers();
+        rep.set(value);
     }
 }
